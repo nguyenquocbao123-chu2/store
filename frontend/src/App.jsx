@@ -20,6 +20,7 @@ import AdminImports from "./pages/AdminImports";
 import AdminInventory from "./pages/AdminInventory";
 import AdminOrders from "./pages/AdminOrders";
 import MyOrders from "./pages/MyOrders";
+import AdminReports from "./pages/AdminReports";
 function App() {
 
     return (
@@ -98,6 +99,11 @@ function App() {
                     <Route
                         path="/admin/orders"
                         element={<AdminOrders />}
+                    />
+
+                    <Route
+                        path="/admin/reports"
+                        element={<AdminReports />}
                     />
 
                     <Route

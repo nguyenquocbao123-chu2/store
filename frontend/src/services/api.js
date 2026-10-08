@@ -395,3 +395,7 @@ export function updateReview(reviewId, data) {
     body: JSON.stringify(data),
   });
 }
+// Owner - báo cáo thống kê
+export function getSalesReport() {
+  return request("/reports/overview");
+}

@@ -1,0 +1,180 @@
+
+.sales-report {
+  max-width: 1200px;
+  min-height: 75vh;
+  margin: 0 auto;
+  padding: 36px 20px;
+}
+
+.report-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.report-heading h1 {
+  margin: 0 0 8px;
+  color: #166534;
+}
+
+.report-heading p {
+  color: #64748b;
+}
+
+.report-heading a,
+.report-orders-link {
+  color: #16803c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.report-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.report-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.report-stat span {
+  color: #64748b;
+}
+
+.report-stat strong {
+  font-size: 32px;
+  color: #166534;
+}
+
+.report-revenue {
+  padding: 28px;
+  margin-bottom: 24px;
+  background: #166534;
+  color: white;
+  border-radius: 14px;
+}
+
+.report-revenue p {
+  margin: 0 0 10px;
+}
+
+.report-revenue h2 {
+  font-size: 36px;
+  margin: 0 0 10px;
+}
+
+.report-revenue small {
+  opacity: 0.85;
+}
+
+.report-panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.report-panel h2 {
+  margin: 0 0 24px;
+  font-size: 20px;
+}
+
+.report-chart {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  overflow-x: auto;
+}
+
+.report-chart-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+  gap: 10px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.report-bar-value {
+  min-height: 34px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.report-bar-area {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+.report-bar {
+  width: 65%;
+  background: #16a34a;
+  border-radius: 6px 6px 0 0;
+}
+
+.report-table-wrap {
+  overflow-x: auto;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.report-table th,
+.report-table td {
+  padding: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.report-table th {
+  background: #f1f5f9;
+}
+
+.report-orders-link {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .report-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .report-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .report-revenue h2 {
+    font-size: 28px;
+  }
+
+  .report-panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .report-stats {
+    grid-template-columns: 1fr;
+  }
+}

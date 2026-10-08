@@ -219,6 +219,10 @@ function AdminDashboard() {
           Quản lý đơn hàng →
         </Link>
 
+        <Link to="/admin/reports">
+          Báo cáo doanh thu →
+        </Link>
+
         <Link to="/products">
           Xem cửa hàng →
         </Link>

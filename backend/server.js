@@ -2,6 +2,8 @@ require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 const express = require("express");
 const cors = require("cors");
 const db = require("./config/database");
@@ -12,10 +14,10 @@ const inventoryRoutes =
 const supplierRoutes = require("./routes/supplierRoutes");
 const importRoutes = require("./routes/importRoutes");    
 const app = express();
-const cartRoutes = require("./routes/cartRoutes");
-app.use("/api/cart", cartRoutes);
 app.use(cors());
 app.use(express.json());
+app.use("/api/cart", cartRoutes);
+app.use("/api/reports", reportRoutes);
 // API đăng ký, đăng nhập và tài khoản
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);

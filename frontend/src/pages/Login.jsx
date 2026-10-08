@@ -1,313 +1,263 @@
-import {
-    useState
-} from "react";
 
+import { useState } from "react";
 import {
-    Link,
-    useLocation,
-    useNavigate
+  Link,
+  useLocation,
+  useNavigate,
 } from "react-router-dom";
 
-import {
-    login,
-    getMe
-} from "../services/api";
-
+import { login, getMe } from "../services/api";
+import "./Auth.css";
 
 function Login() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const navigate =
-        useNavigate();
+  const [email, setEmail] = useState(
+    location.state?.email || ""
+  );
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const location =
-        useLocation();
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-    const [email, setEmail] =
-        useState("");
+    if (loading) return;
 
-    const [password, setPassword] =
-        useState("");
+    setError("");
+    setLoading(true);
 
-    const [loading, setLoading] =
-        useState(false);
+    try {
+      const data = await login(email.trim(), password);
 
-    const [error, setError] =
-        useState("");
+      if (!data.token) {
+        throw new Error("Không nhận được token đăng nhập.");
+      }
 
-    const [user, setUser] =
-        useState(null);
+      localStorage.setItem("token", data.token);
 
+      // Kiểm tra tài khoản bằng JWT
+      const meData = await getMe();
 
-    async function handleSubmit(event) {
+      if (!meData.user) {
+        throw new Error("Không thể xác thực tài khoản.");
+      }
 
-        event.preventDefault();
+      localStorage.setItem(
+        "user",
+        JSON.stringify(meData.user)
+      );
 
-        try {
+      window.dispatchEvent(new Event("auth-change"));
 
-            setLoading(true);
+      // Trở lại trang trước hoặc trang phù hợp
+      const from = location.state?.from;
 
-            setError("");
+      const destination =
+        typeof from === "string" &&
+        from.startsWith("/") &&
+        !from.startsWith("//")
+          ? from
+          : meData.user.role === "owner"
+          ? "/admin"
+          : "/";
 
-            setUser(null);
+      navigate(destination, { replace: true });
+    } catch (err) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
+      window.dispatchEvent(new Event("auth-change"));
 
-            // =========================
-            // 1. ĐĂNG NHẬP
-            // =========================
-
-            const data = await login(
-                email,
-                password
-            );
-
-
-            // =========================
-            // 2. LƯU JWT
-            // =========================
-
-            localStorage.setItem(
-                "token",
-                data.token
-            );
-
-
-            // Lưu user để Header sử dụng sau
-            localStorage.setItem(
-                "user",
-                JSON.stringify(
-                    data.user
-                )
-            );
-
-            window.dispatchEvent(
-                new Event("auth-change")
-            );
-
-            // =========================
-            // 3. KIỂM TRA JWT
-            // =========================
-
-            const meData =
-                await getMe();
-
-
-            setUser(
-                meData.user
-            );
-
-            const destination =
-                location.state?.from;
-
-            if (destination) {
-
-                navigate(
-                    destination,
-                    {
-                        replace: true
-                    }
-                );
-
-            }
-
-        } catch (err) {
-
-            // Nếu có lỗi thì không giữ token cũ
-            localStorage.removeItem(
-                "token"
-            );
-
-            localStorage.removeItem(
-                "user"
-            );
-
-            setError(
-                err.message
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
+      setError(
+        err.message || "Đăng nhập thất bại. Vui lòng thử lại."
+      );
+    } finally {
+      setLoading(false);
     }
+  }
 
+  return (
+    <section className="auth-page">
+      <div className="auth-container">
+        {/* CỘT GIỚI THIỆU */}
+        <aside className="auth-side">
+          <Link to="/" className="auth-brand">
+            <span className="auth-brand-icon">U</span>
+            UMA.VN
+          </Link>
 
-    return (
-        <div>
+          <div className="auth-side-content">
+            <span className="auth-side-tag">
+              CỬA HÀNG CÔNG NGHỆ
+            </span>
 
-            <h1>
-                Đăng nhập
-            </h1>
+            <h2>
+              Công nghệ tốt hơn.
+              <br />
+              Cuộc sống dễ dàng hơn.
+            </h2>
 
+            <p>
+              Khám phá điện thoại, laptop và phụ kiện
+              công nghệ tại UMA.VN.
+            </p>
 
-            {
-                !user && (
+            <div className="auth-feature">
+              <span>✓</span>
+              Sản phẩm đa dạng
+            </div>
 
-                    <form
-                        onSubmit={
-                            handleSubmit
-                        }
-                    >
+            <div className="auth-feature">
+              <span>✓</span>
+              Theo dõi đơn hàng dễ dàng
+            </div>
 
-                        <div>
+            <div className="auth-feature">
+              <span>✓</span>
+              Mua sắm nhanh chóng
+            </div>
+          </div>
 
-                            <label>
-                                Email
-                            </label>
+          <p className="auth-side-footer">
+            UMA.VN — Your Technology Store
+          </p>
+        </aside>
 
-                            <br />
+        {/* FORM ĐĂNG NHẬP */}
+        <div className="auth-content">
+          <div className="auth-card">
+            <Link to="/" className="auth-back">
+              ← Quay về cửa hàng
+            </Link>
 
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={
-                                    (event) =>
-                                        setEmail(
-                                            event.target.value
-                                        )
-                                }
-                                required
-                            />
+            <div className="auth-mobile-brand">
+              UMA.VN
+            </div>
 
-                        </div>
+            <div className="auth-heading">
+              <span className="auth-eyebrow">
+                CHÀO MỪNG TRỞ LẠI
+              </span>
 
+              <h1>Đăng nhập</h1>
 
-                        <br />
+              <p>
+                Đăng nhập để tiếp tục trải nghiệm
+                mua sắm tại UMA.VN.
+              </p>
+            </div>
 
+            {location.state?.registered && (
+              <div
+                className="auth-alert auth-alert-success"
+                role="status"
+              >
+                Đăng ký thành công! Hãy đăng nhập
+                bằng tài khoản vừa tạo.
+              </div>
+            )}
 
-                        <div>
+            {error && (
+              <div
+                className="auth-alert auth-alert-error"
+                role="alert"
+              >
+                {error}
+              </div>
+            )}
 
-                            <label>
-                                Mật khẩu
-                            </label>
+            <form
+              className="auth-form"
+              onSubmit={handleSubmit}
+            >
+              <div className="auth-field">
+                <label htmlFor="login-email">
+                  Địa chỉ email
+                </label>
 
-                            <br />
+                <input
+                  id="login-email"
+                  type="email"
+                  placeholder="Nhập email của bạn"
+                  value={email}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
+                  autoComplete="email"
+                  required
+                />
+              </div>
 
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={
-                                    (event) =>
-                                        setPassword(
-                                            event.target.value
-                                        )
-                                }
-                                required
-                            />
+              <div className="auth-field">
+                <label htmlFor="login-password">
+                  Mật khẩu
+                </label>
 
-                        </div>
+                <div className="auth-password-wrap">
+                  <input
+                    id="login-password"
+                    type={
+                      showPassword ? "text" : "password"
+                    }
+                    placeholder="Nhập mật khẩu"
+                    value={password}
+                    onChange={(e) =>
+                      setPassword(e.target.value)
+                    }
+                    autoComplete="current-password"
+                    required
+                  />
 
+                  <button
+                    type="button"
+                    className="auth-toggle-password"
+                    onClick={() =>
+                      setShowPassword(!showPassword)
+                    }
+                    aria-label={
+                      showPassword
+                        ? "Ẩn mật khẩu"
+                        : "Hiện mật khẩu"
+                    }
+                  >
+                    {showPassword ? "Ẩn" : "Hiện"}
+                  </button>
+                </div>
+              </div>
 
-                        <br />
+              <button
+                type="submit"
+                className="auth-submit"
+                disabled={loading}
+              >
+                {loading
+                  ? "Đang đăng nhập..."
+                  : "Đăng nhập →"}
+              </button>
+            </form>
 
+            <div className="auth-divider">
+              <span>Chưa có tài khoản?</span>
+            </div>
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                        >
+            <Link
+              to="/register"
+              className="auth-secondary-button"
+            >
+              Tạo tài khoản mới
+            </Link>
 
-                            {
-                                loading
-                                    ? "Đang đăng nhập..."
-                                    : "Đăng nhập"
-                            }
-
-                        </button>
-
-                    </form>
-
-                )
-            }
-
-
-            {
-                error && (
-
-                    <div>
-
-                        <p>
-                            Lỗi: {error}
-                        </p>
-
-                    </div>
-
-                )
-            }
-
-
-            {
-                user && (
-
-                    <div>
-
-                        <h2>
-                            Đăng nhập thành công
-                        </h2>
-
-                        <p>
-                            JWT đã được Backend
-                            xác thực.
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                ID:
-                            </strong>
-
-                            {" "}
-
-                            {user.user_id}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Họ tên:
-                            </strong>
-
-                            {" "}
-
-                            {user.full_name}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Email:
-                            </strong>
-
-                            {" "}
-
-                            {user.email}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Vai trò:
-                            </strong>
-
-                            {" "}
-
-                            {user.role}
-                        </p>
-
-
-                        <Link to="/">
-                            Về trang chủ
-                        </Link>
-
-                    </div>
-
-                )
-            }
-
+            <p className="auth-bottom-note">
+              Mua sắm tiện lợi cùng UMA.VN
+            </p>
+          </div>
         </div>
-    );
-
+      </div>
+    </section>
+  );
 }
-
 
 export default Login;

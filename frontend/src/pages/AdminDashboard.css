@@ -159,3 +159,6 @@
     flex-direction: column;
   }
 }
+.dashboard-links {
+  flex-wrap: wrap;
+}
