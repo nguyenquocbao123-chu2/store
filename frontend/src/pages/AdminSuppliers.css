@@ -1,0 +1,156 @@
+.admin-suppliers {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 35px 20px;
+  min-height: 75vh;
+}
+
+.suppliers-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.suppliers-heading h1 {
+  color: #166534;
+  font-size: 28px;
+  margin: 0 0 8px;
+}
+
+.suppliers-heading p {
+  color: #64748b;
+}
+
+.suppliers-back {
+  color: #16803c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.suppliers-panel {
+  background: white;
+  padding: 25px;
+  margin-bottom: 25px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.suppliers-panel h2 {
+  font-size: 21px;
+  margin: 0 0 22px;
+}
+
+.suppliers-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.suppliers-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suppliers-field label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.suppliers-field input {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.suppliers-field input:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.suppliers-form-actions {
+  grid-column: 1 / -1;
+}
+
+.suppliers-submit {
+  background: #16803c;
+  color: white;
+  border: none;
+  padding: 13px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.suppliers-submit:hover {
+  background: #11632e;
+}
+
+.suppliers-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.suppliers-list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.suppliers-list-heading span {
+  color: #64748b;
+}
+
+.suppliers-table-wrap {
+  overflow-x: auto;
+}
+
+.suppliers-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.suppliers-table th,
+.suppliers-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.suppliers-table th {
+  background: #f1f5f9;
+}
+
+.suppliers-alert {
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.suppliers-alert.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.suppliers-alert.error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+@media (max-width: 768px) {
+  .suppliers-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .suppliers-form {
+    grid-template-columns: 1fr;
+  }
+
+  .suppliers-panel {
+    padding: 16px;
+  }
+}

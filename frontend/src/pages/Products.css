@@ -1,0 +1,340 @@
+.products-page {
+    max-width: 1200px;
+
+    margin: 35px auto 70px;
+
+    padding: 0 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        250px 1fr;
+
+    gap: 35px;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.filter-sidebar {
+    background: white;
+
+    border: 1px solid #e4e4e4;
+
+    border-radius: 10px;
+
+    padding: 22px;
+
+    align-self: start;
+}
+
+
+.filter-title {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    padding-bottom: 18px;
+
+    border-bottom:
+        1px solid #eeeeee;
+}
+
+
+.filter-title h2 {
+    font-size: 21px;
+}
+
+
+.clear-filter {
+    border: none;
+
+    background: none;
+
+    color: #168a5b;
+
+    font-size: 13px;
+}
+
+
+.clear-filter:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   FILTER GROUP
+========================= */
+
+.filter-group {
+    padding: 22px 0;
+
+    border-bottom:
+        1px solid #eeeeee;
+}
+
+
+.filter-group:last-child {
+    border-bottom: none;
+}
+
+
+.filter-group h3 {
+    font-size: 16px;
+
+    margin-bottom: 15px;
+}
+
+
+.filter-option {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin: 12px 0;
+
+    color: #555;
+
+    cursor: pointer;
+}
+
+
+.filter-option input {
+    accent-color: #168a5b;
+}
+
+
+/* =========================
+   PRICE
+========================= */
+
+.price-label {
+    display: block;
+
+    color: #666;
+
+    font-size: 13px;
+
+    margin-bottom: 6px;
+}
+
+
+.price-input {
+    width: 100%;
+
+    border:
+        1px solid #dddddd;
+
+    border-radius: 5px;
+
+    padding: 10px;
+
+    margin-bottom: 14px;
+
+    outline: none;
+}
+
+
+.price-input:focus {
+    border-color: #168a5b;
+}
+
+
+.apply-filter {
+    width: 100%;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background: #168a5b;
+
+    color: white;
+
+    padding: 10px;
+
+    font-weight: 600;
+}
+
+
+.apply-filter:hover {
+    background: #117249;
+}
+
+
+.filter-note {
+    color: #999;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.products-content {
+    min-width: 0;
+}
+
+
+.products-heading {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+
+.products-heading h1 {
+    font-size: 30px;
+
+    margin-bottom: 8px;
+}
+
+
+.product-count {
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+.search-result {
+    margin-bottom: 8px;
+
+    color: #555;
+}
+
+
+/* =========================
+   SORT
+========================= */
+
+.sort-box {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    white-space: nowrap;
+}
+
+
+.sort-box label {
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+.sort-box select {
+    border:
+        1px solid #dddddd;
+
+    border-radius: 5px;
+
+    background: white;
+
+    padding: 10px 12px;
+
+    outline: none;
+}
+
+
+.sort-box select:focus {
+    border-color: #168a5b;
+}
+
+
+/* =========================
+   PRODUCT GRID
+========================= */
+
+.products-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 25px;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.products-message,
+.products-error {
+    background: white;
+
+    border:
+        1px solid #e5e5e5;
+
+    border-radius: 8px;
+
+    padding: 50px 25px;
+
+    text-align: center;
+}
+
+
+.products-message h3 {
+    margin-bottom: 8px;
+}
+
+
+.products-message p {
+    color: #777;
+}
+
+
+.products-error {
+    color: #b42318;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+
+    .products-page {
+        grid-template-columns: 1fr;
+    }
+
+    .products-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .products-heading {
+        flex-direction: column;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

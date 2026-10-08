@@ -1,6 +1,7 @@
 require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 const express = require("express");
 const cors = require("cors");
 const db = require("./config/database");
@@ -11,12 +12,14 @@ const inventoryRoutes =
 const supplierRoutes = require("./routes/supplierRoutes");
 const importRoutes = require("./routes/importRoutes");    
 const app = express();
-
+const cartRoutes = require("./routes/cartRoutes");
+app.use("/api/cart", cartRoutes);
 app.use(cors());
 app.use(express.json());
 // API đăng ký, đăng nhập và tài khoản
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/reviews", reviewRoutes);
 if (
     !process.env.JWT_SECRET ||
     process.env.JWT_SECRET.length < 32
@@ -42,10 +45,6 @@ app.use(
 app.use(
     "/api/inventory",
     inventoryRoutes
-);
-app.use(
-    "/api/products",
-    productRoutes
 );
 
 app.get("/", (req, res) => {

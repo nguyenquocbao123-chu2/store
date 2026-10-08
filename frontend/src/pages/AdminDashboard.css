@@ -1,0 +1,161 @@
+.admin-dashboard {
+  max-width: 1200px;
+  min-height: 75vh;
+  margin: 0 auto;
+  padding: 36px 20px;
+}
+
+.dashboard-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.dashboard-heading h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  color: #166534;
+}
+
+.dashboard-heading p {
+  color: #64748b;
+}
+
+.dashboard-action {
+  padding: 12px 20px;
+  background: #16803c;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.dashboard-action:hover {
+  background: #11632e;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.dashboard-stat {
+  padding: 24px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.dashboard-stat p {
+  color: #64748b;
+  margin: 0 0 12px;
+}
+
+.dashboard-stat h2 {
+  font-size: 32px;
+  color: #166534;
+  margin: 0;
+}
+
+.dashboard-stat.warning h2 {
+  color: #dc2626;
+}
+
+.dashboard-panel {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.dashboard-panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dashboard-panel-heading h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.dashboard-panel-heading span {
+  color: #64748b;
+}
+
+.dashboard-table-wrap {
+  overflow-x: auto;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dashboard-table th {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.stock-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stock-badge.low {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.stock-badge.out {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.dashboard-links {
+  display: flex;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.dashboard-links a {
+  color: #16803c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .dashboard-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-panel {
+    padding: 16px;
+  }
+
+  .dashboard-links {
+    flex-direction: column;
+  }
+}

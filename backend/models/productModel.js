@@ -1,10 +1,13 @@
-
 const db = require("../config/database");
 
-const Product = {
 
-    // Lấy danh sách, tìm kiếm và lọc sản phẩm
-    getAll: (filters, callback) => {
+const productModel = {
+
+    // =========================
+    // GET ALL
+    // =========================
+
+    getAll(filters, callback) {
 
         let sql = `
             SELECT
@@ -13,13 +16,14 @@ const Product = {
             FROM products p
             LEFT JOIN categories c
                 ON p.category_id = c.category_id
-            WHERE 1 = 1
+            WHERE p.status = 'active'
         `;
 
         const params = [];
 
-        // Tìm kiếm theo từ khóa
+
         if (filters.keyword) {
+
             sql += `
                 AND (
                     p.product_name LIKE ?
@@ -29,7 +33,8 @@ const Product = {
                 )
             `;
 
-            const keyword = `%${filters.keyword}%`;
+            const keyword =
+                `%${filters.keyword}%`;
 
             params.push(
                 keyword,
@@ -39,41 +44,80 @@ const Product = {
             );
         }
 
-        // Lọc theo danh mục
-        if (filters.category_id !== undefined) {
-            sql += ` AND p.category_id = ?`;
 
-            params.push(filters.category_id);
-        }
-
-        // Lọc theo thương hiệu
         if (filters.brand) {
-            sql += ` AND p.brand LIKE ?`;
 
-            params.push(`%${filters.brand}%`);
+            sql += `
+                AND p.brand LIKE ?
+            `;
+
+            params.push(
+                `%${filters.brand}%`
+            );
         }
 
-        // Giá thấp nhất
-        if (filters.min_price !== undefined) {
-            sql += ` AND p.price >= ?`;
 
-            params.push(filters.min_price);
+        if (filters.category_id) {
+
+            sql += `
+                AND p.category_id = ?
+            `;
+
+            params.push(
+                filters.category_id
+            );
         }
 
-        // Giá cao nhất
-        if (filters.max_price !== undefined) {
-            sql += ` AND p.price <= ?`;
 
-            params.push(filters.max_price);
+        if (
+            filters.min_price !== undefined &&
+            filters.min_price !== null
+        ) {
+
+            sql += `
+                AND p.price >= ?
+            `;
+
+            params.push(
+                filters.min_price
+            );
         }
 
-        sql += ` ORDER BY p.product_id DESC`;
 
-        db.all(sql, params, callback);
+        if (
+            filters.max_price !== undefined &&
+            filters.max_price !== null
+        ) {
+
+            sql += `
+                AND p.price <= ?
+            `;
+
+            params.push(
+                filters.max_price
+            );
+        }
+
+
+        sql += `
+            ORDER BY p.product_id DESC
+        `;
+
+
+        db.all(
+            sql,
+            params,
+            callback
+        );
+
     },
 
-    // Xem chi tiết sản phẩm
-    getById: (id, callback) => {
+
+    // =========================
+    // GET BY ID
+    // =========================
+
+    getById(id, callback) {
 
         const sql = `
             SELECT
@@ -82,14 +126,215 @@ const Product = {
             FROM products p
             LEFT JOIN categories c
                 ON p.category_id = c.category_id
-            WHERE p.product_id = ?
+            WHERE
+                p.product_id = ?
+                AND p.status = 'active'
         `;
 
-        db.get(sql, [id], callback);
+
+        db.get(
+            sql,
+            [id],
+            callback
+        );
+
     },
 
-    // Lấy sản phẩm dưới ngưỡng cảnh báo
-    getLowStock: (callback) => {
+
+    // =========================
+    // CREATE
+    // =========================
+
+    create(product, callback) {
+
+        const sql = `
+            INSERT INTO products (
+                category_id,
+                product_name,
+                brand,
+                price,
+                stock_quantity,
+                low_stock_threshold,
+                description,
+                specifications,
+                image,
+                status
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
+        `;
+
+
+        const params = [
+
+            product.category_id,
+
+            product.product_name,
+
+            product.brand,
+
+            product.price,
+
+            product.stock_quantity,
+
+            product.low_stock_threshold,
+
+            product.description,
+
+            product.specifications,
+
+            product.image
+
+        ];
+
+
+        db.run(
+            sql,
+            params,
+            function (err) {
+
+                if (err) {
+
+                    return callback(
+                        err
+                    );
+
+                }
+
+
+                callback(
+                    null,
+                    this.lastID
+                );
+
+            }
+        );
+
+    },
+
+
+    // =========================
+    // UPDATE
+    // =========================
+
+    update(id, product, callback) {
+
+        const sql = `
+            UPDATE products
+
+            SET
+                category_id = ?,
+                product_name = ?,
+                brand = ?,
+                price = ?,
+                stock_quantity = ?,
+                low_stock_threshold = ?,
+                description = ?,
+                specifications = ?,
+                image = ?
+
+            WHERE
+                product_id = ?
+                AND status = 'active'
+        `;
+
+
+        const params = [
+
+            product.category_id,
+
+            product.product_name,
+
+            product.brand,
+
+            product.price,
+
+            product.stock_quantity,
+
+            product.low_stock_threshold,
+
+            product.description,
+
+            product.specifications,
+
+            product.image,
+
+            id
+
+        ];
+
+
+        db.run(
+            sql,
+            params,
+            function (err) {
+
+                if (err) {
+
+                    return callback(
+                        err
+                    );
+
+                }
+
+
+                callback(
+                    null,
+                    this.changes
+                );
+
+            }
+        );
+
+    },
+
+
+    // =========================
+    // SOFT DELETE
+    // =========================
+
+    deactivate(id, callback) {
+
+        const sql = `
+            UPDATE products
+
+            SET status = 'inactive'
+
+            WHERE
+                product_id = ?
+                AND status = 'active'
+        `;
+
+
+        db.run(
+            sql,
+            [id],
+            function (err) {
+
+                if (err) {
+
+                    return callback(
+                        err
+                    );
+
+                }
+
+
+                callback(
+                    null,
+                    this.changes
+                );
+
+            }
+        );
+
+    },
+
+
+    // =========================
+    // LOW STOCK
+    // =========================
+
+    getLowStock(callback) {
 
         const sql = `
             SELECT
@@ -99,16 +344,32 @@ const Product = {
                 p.stock_quantity,
                 p.low_stock_threshold,
                 c.category_name
+
             FROM products p
+
             LEFT JOIN categories c
                 ON p.category_id = c.category_id
-            WHERE p.stock_quantity <= p.low_stock_threshold
-            ORDER BY p.stock_quantity ASC
+
+            WHERE
+                p.status = 'active'
+                AND p.stock_quantity
+                    <= p.low_stock_threshold
+
+            ORDER BY
+                p.stock_quantity ASC
         `;
 
-        db.all(sql, [], callback);
+
+        db.all(
+            sql,
+            [],
+            callback
+        );
+
     }
 
 };
 
-module.exports = Product;
+
+module.exports =
+    productModel;
